@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f64d5846eabb283448075973ac7278fa
+guid: 59ffc4e1bb53dd74ab21d6dd886d7d3e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5041701088833900988
-    second: close reference_0
+      213: 2046956604111617513
+    second: SIOMAI_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: close reference_0
+      name: SIOMAI_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 360
-        height: 360
+        width: 900
+        height: 656
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cb115af9d68b7f540800000000000000
-      internalID: 5041701088833900988
+      spriteID: 9ed76baaf20486c10800000000000000
+      internalID: 2046956604111617513
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      close reference_0: 5041701088833900988
+      SIOMAI_0: 2046956604111617513
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

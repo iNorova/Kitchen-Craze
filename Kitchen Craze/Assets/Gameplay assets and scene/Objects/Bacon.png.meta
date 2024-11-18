@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f64d5846eabb283448075973ac7278fa
+guid: 084a23f86ac17df4a85b89a13da7b69d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5041701088833900988
-    second: close reference_0
+      213: 4638073604318642339
+    second: Bacon_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: close reference_0
+      name: Bacon_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 360
-        height: 360
+        x: 77
+        y: 55
+        width: 1669
+        height: 899
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cb115af9d68b7f540800000000000000
-      internalID: 5041701088833900988
+      spriteID: 3a0478b9e5fbd5040800000000000000
+      internalID: 4638073604318642339
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      close reference_0: 5041701088833900988
+      Bacon_0: 4638073604318642339
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
