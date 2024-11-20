@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;  // For TextMeshPro
-using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -8,7 +7,9 @@ public class CookingGameManager : MonoBehaviour
 {
     [Header("UI Elements")]
     public TextMeshProUGUI ingredientsTextBox;
-    public Button mixButton;
+
+    [Tooltip("The object that will be clicked/touched to process the mix (e.g., the pan).")]
+    public GameObject mixObject;
 
     [Tooltip("Delay in seconds before processing the mix.")]
     public float mixDelay = 4f;
@@ -26,8 +27,12 @@ public class CookingGameManager : MonoBehaviour
     private List<string> currentIngredientNames = new List<string>();
     private List<GameObject> currentIngredients = new List<GameObject>();
 
+    private Camera mainCamera;
+
     private void Start()
     {
+        mainCamera = Camera.main;
+
         // Ensure all target objects are initially hidden
         foreach (var combo in combinations)
         {
@@ -37,10 +42,21 @@ public class CookingGameManager : MonoBehaviour
             }
         }
 
-        if (mixButton != null)
+        // Ensure Mix Object (Pan) is initially active
+        if (mixObject != null)
         {
-            mixButton.onClick.AddListener(ProcessMix);
-            mixButton.interactable = false;  // Initially disable the Mix Button
+            // Ensure it has a Collider2D for interaction
+            var collider = mixObject.GetComponent<Collider2D>();
+            if (collider == null)
+            {
+                Debug.LogError("Mix Object must have a Collider2D to detect clicks/touches!");
+            }
+
+            mixObject.SetActive(true); // Keep the pan visible at the start
+        }
+        else
+        {
+            Debug.LogError("Mix Object is not assigned in the Inspector!");
         }
     }
 
@@ -61,10 +77,10 @@ public class CookingGameManager : MonoBehaviour
             currentIngredients.Add(ingredient);
             UpdateTextBox();
 
-            // Check if two or more ingredients are in the pan, enable the Mix Button
+            // Check if two or more ingredients are in the pan, enable the Mix Object
             if (currentIngredients.Count >= 2)
             {
-                EnableMixButton();
+                EnableMixObject();
             }
         }
 
@@ -81,7 +97,7 @@ public class CookingGameManager : MonoBehaviour
         if (renderer != null) renderer.enabled = false;
         if (collider != null) collider.enabled = false;
 
-        // Optional: Move the object out of view (e.g., below the visible screen)
+        // Optionally move the object out of view
         ingredient.transform.position = new Vector3(ingredient.transform.position.x, ingredient.transform.position.y, -100);
     }
 
@@ -90,11 +106,45 @@ public class CookingGameManager : MonoBehaviour
         ingredientsTextBox.text = string.Join(", ", currentIngredientNames);
     }
 
-    private void EnableMixButton()
+    private void EnableMixObject()
     {
-        if (mixButton != null)
+        if (mixObject != null)
         {
-            mixButton.interactable = true;  // Enable the Mix Button when there are two or more ingredients
+            mixObject.SetActive(true); // Show the pan for interaction
+        }
+    }
+
+    private void Update()
+    {
+        // Handle mouse clicks
+        if (Input.GetMouseButtonDown(0))
+        {
+            HandleInteraction(Input.mousePosition);
+        }
+
+        // Handle touch inputs
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            // Only handle the touch when it begins
+            if (touch.phase == TouchPhase.Began)
+            {
+                HandleInteraction(touch.position);
+            }
+        }
+    }
+
+    private void HandleInteraction(Vector3 screenPosition)
+    {
+        Ray ray = mainCamera.ScreenPointToRay(screenPosition);
+        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+
+        if (hit.collider != null)
+        {
+            if (hit.collider.gameObject == mixObject && mixObject.activeSelf)
+            {
+                ProcessMix();
+            }
         }
     }
 
@@ -154,14 +204,14 @@ public class CookingGameManager : MonoBehaviour
     {
         foreach (var ingredient in currentIngredients)
         {
-            // Re-enable Renderers and Colliders of ingredients to reset them
+            // Re-enable Renderers and Colliders to reset ingredients
             var renderer = ingredient.GetComponent<Renderer>();
             var collider = ingredient.GetComponent<Collider2D>();
 
             if (renderer != null) renderer.enabled = true;
             if (collider != null) collider.enabled = true;
 
-            // Move ingredient back to its original state if necessary
+            // Reset ingredient position if needed
             ingredient.transform.position = new Vector3(ingredient.transform.position.x, ingredient.transform.position.y, 0);
         }
 
@@ -169,10 +219,10 @@ public class CookingGameManager : MonoBehaviour
         currentIngredients.Clear();
         UpdateTextBox();
 
-        // Disable Mix Button after ingredients are cleared
-        if (mixButton != null)
+        // Keep Mix Object (Pan) active for further interactions
+        if (mixObject != null)
         {
-            mixButton.interactable = false;
+            mixObject.SetActive(true); // Keep the pan visible
         }
     }
 
