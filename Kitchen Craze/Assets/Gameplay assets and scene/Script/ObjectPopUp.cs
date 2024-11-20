@@ -1,5 +1,5 @@
 using UnityEngine;
-using TMPro;  // For TextMeshPro
+using TMPro; // For TextMeshPro
 using System.Collections;
 using System.Collections.Generic;
 
@@ -17,13 +17,20 @@ public class CookingGameManager : MonoBehaviour
     [System.Serializable]
     public class Combination
     {
-        public List<GameObject> ingredientObjects;
-        public GameObject cookedObject; // Object to activate when the combination matches
+        public List<GameObject> ingredientObjects; // Ingredients needed for this combination
+        public GameObject cookedObject; // Resulting object (e.g., dish) to activate
+        public GameObject lockedStateObject; // Object representing the locked state in the panel
+        public GameObject unlockedStateObject; // Object representing the unlocked state in the panel
     }
 
     [Header("Combinations Settings")]
     public List<Combination> combinations = new List<Combination>();
 
+    [Header("Game Progression")]
+    [Tooltip("Total number of dishes needed to complete the game.")]
+    public int totalDishes = 20;
+
+    private int completedDishes = 0; // Tracks how many dishes are completed
     private List<string> currentIngredientNames = new List<string>();
     private List<GameObject> currentIngredients = new List<GameObject>();
 
@@ -33,26 +40,29 @@ public class CookingGameManager : MonoBehaviour
     {
         mainCamera = Camera.main;
 
-        // Ensure all target objects are initially hidden
+        // Initialize all locked/unlocked objects
         foreach (var combo in combinations)
         {
             if (combo.cookedObject != null)
-            {
                 combo.cookedObject.SetActive(false);
-            }
+
+            if (combo.lockedStateObject != null)
+                combo.lockedStateObject.SetActive(true); // Show locked state initially
+
+            if (combo.unlockedStateObject != null)
+                combo.unlockedStateObject.SetActive(false); // Hide unlocked state initially
         }
 
         // Ensure Mix Object (Pan) is initially active
         if (mixObject != null)
         {
-            // Ensure it has a Collider2D for interaction
             var collider = mixObject.GetComponent<Collider2D>();
             if (collider == null)
             {
                 Debug.LogError("Mix Object must have a Collider2D to detect clicks/touches!");
             }
 
-            mixObject.SetActive(true); // Keep the pan visible at the start
+            mixObject.SetActive(true);
         }
         else
         {
@@ -70,7 +80,7 @@ public class CookingGameManager : MonoBehaviour
 
     public void AddIngredient(GameObject ingredient)
     {
-        string ingredientName = ingredient.name.Replace("(Clone)", "").Trim(); // Strip "(Clone)" from the name
+        string ingredientName = ingredient.name.Replace("(Clone)", "").Trim();
         if (!currentIngredientNames.Contains(ingredientName))
         {
             currentIngredientNames.Add(ingredientName);
@@ -84,20 +94,17 @@ public class CookingGameManager : MonoBehaviour
             }
         }
 
-        // Instead of destroying, disable the Renderer and Collider
         HideIngredient(ingredient);
     }
 
     private void HideIngredient(GameObject ingredient)
     {
-        // Disable the Renderer and Collider to "hide" the ingredient
         var renderer = ingredient.GetComponent<Renderer>();
         var collider = ingredient.GetComponent<Collider2D>();
 
         if (renderer != null) renderer.enabled = false;
         if (collider != null) collider.enabled = false;
 
-        // Optionally move the object out of view
         ingredient.transform.position = new Vector3(ingredient.transform.position.x, ingredient.transform.position.y, -100);
     }
 
@@ -110,23 +117,20 @@ public class CookingGameManager : MonoBehaviour
     {
         if (mixObject != null)
         {
-            mixObject.SetActive(true); // Show the pan for interaction
+            mixObject.SetActive(true);
         }
     }
 
     private void Update()
     {
-        // Handle mouse clicks
         if (Input.GetMouseButtonDown(0))
         {
             HandleInteraction(Input.mousePosition);
         }
 
-        // Handle touch inputs
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-            // Only handle the touch when it begins
             if (touch.phase == TouchPhase.Began)
             {
                 HandleInteraction(touch.position);
@@ -192,26 +196,41 @@ public class CookingGameManager : MonoBehaviour
             combo.cookedObject.SetActive(true);
             Debug.Log($"Activated: {combo.cookedObject.name}");
         }
-        else
-        {
-            Debug.LogError("Combination is missing a target object, or target object is not tagged as 'Cooked'!");
-        }
+
+        // Unlock associated panels
+        UnlockPanels(combo);
 
         ClearIngredients();
+    }
+
+    private void UnlockPanels(Combination combo)
+    {
+        if (combo.lockedStateObject != null)
+            combo.lockedStateObject.SetActive(false); // Hide locked state
+
+        if (combo.unlockedStateObject != null)
+            combo.unlockedStateObject.SetActive(true); // Show unlocked state
+
+        completedDishes++;
+        Debug.Log($"Unlocked panel for dish: {combo.cookedObject.name} (Total completed dishes: {completedDishes})");
+
+        if (completedDishes == totalDishes)
+        {
+            Debug.Log("All dishes are completed!");
+            ResetGame();
+        }
     }
 
     private void ClearIngredients()
     {
         foreach (var ingredient in currentIngredients)
         {
-            // Re-enable Renderers and Colliders to reset ingredients
             var renderer = ingredient.GetComponent<Renderer>();
             var collider = ingredient.GetComponent<Collider2D>();
 
             if (renderer != null) renderer.enabled = true;
             if (collider != null) collider.enabled = true;
 
-            // Reset ingredient position if needed
             ingredient.transform.position = new Vector3(ingredient.transform.position.x, ingredient.transform.position.y, 0);
         }
 
@@ -219,10 +238,9 @@ public class CookingGameManager : MonoBehaviour
         currentIngredients.Clear();
         UpdateTextBox();
 
-        // Keep Mix Object (Pan) active for further interactions
         if (mixObject != null)
         {
-            mixObject.SetActive(true); // Keep the pan visible
+            mixObject.SetActive(true);
         }
     }
 
@@ -236,6 +254,19 @@ public class CookingGameManager : MonoBehaviour
             {
                 combo.cookedObject.SetActive(false);
             }
+
+            if (combo.lockedStateObject != null)
+            {
+                combo.lockedStateObject.SetActive(true); // Reset to locked state
+            }
+
+            if (combo.unlockedStateObject != null)
+            {
+                combo.unlockedStateObject.SetActive(false); // Reset to hidden unlocked state
+            }
         }
+
+        completedDishes = 0; // Reset progression
+        Debug.Log("Game reset!");
     }
 }
