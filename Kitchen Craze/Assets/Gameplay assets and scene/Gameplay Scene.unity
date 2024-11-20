@@ -565,8 +565,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 0ab7a471808ddf04f9e4a1da454ac817, type: 3}
+  m_Resource: {fileID: 8300000, guid: 0ab7a471808ddf04f9e4a1da454ac817, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -1988,6 +1988,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PausePanel: {fileID: 777118561}
+  BackgroundMusic: {fileID: 276689916}
 --- !u!1 &831297613
 GameObject:
   m_ObjectHideFlags: 0
