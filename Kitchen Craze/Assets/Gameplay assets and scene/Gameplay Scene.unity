@@ -1988,7 +1988,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PausePanel: {fileID: 777118561}
-  BackgroundMusic: {fileID: 276689916}
 --- !u!1 &831297613
 GameObject:
   m_ObjectHideFlags: 0
