@@ -317,7 +317,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -5.86, y: 4.15}
+  m_AnchoredPosition: {x: -7.97, y: 4.15}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &152053073
@@ -623,8 +623,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37f62e95f01ac86469f9a5ff9b7beeb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSprite: {fileID: 7375629885387652943, guid: aa3fb6cb3369a2c4998e8773e300260a, type: 3}
-  draggingSprite: {fileID: 508591715825662441, guid: f0ff4829ac4f13a4693e1a50bc40f3af, type: 3}
+  dragSpeed: 10
+  sagTorque: 50
+  rotationDamping: 5
 --- !u!1 &193280466
 GameObject:
   m_ObjectHideFlags: 0
@@ -1642,7 +1643,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 7
 --- !u!212 &670407409
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1710,8 +1711,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37f62e95f01ac86469f9a5ff9b7beeb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSprite: {fileID: 4646649027328027380, guid: a27b6407f2d893443be5b421829ec225, type: 3}
-  draggingSprite: {fileID: 4646649027328027380, guid: a27b6407f2d893443be5b421829ec225, type: 3}
+  dragSpeed: 10
+  sagTorque: 50
+  rotationDamping: 5
 --- !u!61 &670407411
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1932,7 +1934,7 @@ Transform:
   m_GameObject: {fileID: 769804678}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.96, y: -2.95, z: 9.941493}
+  m_LocalPosition: {x: 3.69, y: -2.95, z: 9.941493}
   m_LocalScale: {x: 0.2622, y: 0.2947, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2000,7 +2002,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 7
 --- !u!212 &769804682
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2068,8 +2070,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37f62e95f01ac86469f9a5ff9b7beeb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSprite: {fileID: -5441776837291986827, guid: 09ed1abd0421ea74c9e4ae675971dccb, type: 3}
-  draggingSprite: {fileID: -5441776837291986827, guid: 09ed1abd0421ea74c9e4ae675971dccb, type: 3}
+  dragSpeed: 10
+  sagTorque: 50
+  rotationDamping: 5
 --- !u!1 &777118561
 GameObject:
   m_ObjectHideFlags: 0
@@ -2415,14 +2418,14 @@ RectTransform:
   m_GameObject: {fileID: 860583400}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.52, y: 0.7428571, z: 0.7428571}
+  m_LocalScale: {x: 0.45000002, y: 0.6428572, z: 0.6428572}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1203139610}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 8.02, y: 4.15}
+  m_AnchoredPosition: {x: 8.02, y: 4}
   m_SizeDelta: {x: 2.9732, y: 2.1499}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &860583406
@@ -4602,8 +4605,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37f62e95f01ac86469f9a5ff9b7beeb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSprite: {fileID: 4638073604318642339, guid: 084a23f86ac17df4a85b89a13da7b69d, type: 3}
-  draggingSprite: {fileID: 4638073604318642339, guid: 084a23f86ac17df4a85b89a13da7b69d, type: 3}
+  dragSpeed: 10
+  sagTorque: 50
+  rotationDamping: 5
 --- !u!50 &2039279775
 Rigidbody2D:
   serializedVersion: 5
@@ -4630,7 +4634,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 7
 --- !u!1 &2084367967
 GameObject:
   m_ObjectHideFlags: 0

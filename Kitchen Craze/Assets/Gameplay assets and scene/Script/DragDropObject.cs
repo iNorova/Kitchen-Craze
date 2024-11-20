@@ -1,95 +1,74 @@
 using UnityEngine;
 
-public class UniversalDragAndDrop : MonoBehaviour
+public class DragAndSwing : MonoBehaviour
 {
-    private bool isDragging = false;
-    private Vector3 startPosition;
-    private Vector3 offset;
+    private Rigidbody2D rb;         // Reference to the object's Rigidbody2D
+    private bool isDragging = false; // Is the object currently being dragged?
+    private Vector2 offset;         // Offset between mouse and object during drag
+    private Vector2 mousePosition;  // Mouse position in world coordinates
 
-    // Sprites for dragging and idle states
-    public Sprite defaultSprite;   // Set in the Inspector for idle state
-    public Sprite draggingSprite;  // Set in the Inspector for dragging state
-
-    private SpriteRenderer spriteRenderer;
+    public float dragSpeed = 10f;    // Speed at which the object follows the mouse
+    public float sagTorque = 50f;    // Torque applied to create sag effect
+    public float rotationDamping = 5f; // Damping to stabilize rotation
 
     void Start()
     {
-        // Get the SpriteRenderer component
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        
-        // Set the initial sprite to default
-        if (defaultSprite != null)
-        {
-            spriteRenderer.sprite = defaultSprite;
-        }
+        // Get the Rigidbody2D component for physics-based movement
+        rb = GetComponent<Rigidbody2D>();
+
+        // Disable gravity temporarily when dragging
+        rb.gravityScale = 0;
+
+        // Set the angular damping to smooth out rotation
+        rb.angularDamping = rotationDamping;
     }
 
     void Update()
     {
-        HandleInput();
-        
-        // Change the sprite based on dragging state
         if (isDragging)
         {
-            spriteRenderer.sprite = draggingSprite;
-        }
-        else
-        {
-            spriteRenderer.sprite = defaultSprite;
+            // Update the mouse position in world coordinates
+            mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            // Convert the mouse position to Vector2 to work with Rigidbody2D position (2D)
+            Vector2 direction = (Vector2)mousePosition - rb.position;
+
+            // Set the object's velocity towards the mouse position with drag speed
+            rb.linearVelocity = direction * dragSpeed;
+
+            // Optionally, apply rotation while dragging to simulate swinging (if you want)
+            // You could also use the direction of dragging to determine rotation
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            rb.rotation = angle;
         }
     }
 
-    private void HandleInput()
+    private void OnMouseDown()
     {
-        // Handle mobile touch input
-        if (Input.touchCount > 0)
-        {
-            Touch touch = Input.GetTouch(0);
-            Vector3 touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
-            touchPosition.z = 0;
+        // When the mouse is clicked on the object, start dragging
+        isDragging = true;
 
-            if (touch.phase == TouchPhase.Began)
-            {
-                RaycastHit2D hit = Physics2D.Raycast(touchPosition, Vector2.zero);
-                if (hit.collider != null && hit.collider.gameObject == gameObject)
-                {
-                    isDragging = true;
-                    startPosition = transform.position;
-                    offset = startPosition - touchPosition;
-                }
-            }
-            else if (touch.phase == TouchPhase.Moved && isDragging)
-            {
-                transform.position = touchPosition + offset;
-            }
-            else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
-            {
-                isDragging = false;
-            }
-        }
-        // Handle mouse input for testing in Unity editor
-        else if (Input.GetMouseButtonDown(0))
-        {
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mousePosition.z = 0;
+        // Calculate the offset between the object and the mouse position
+        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        offset = (Vector2)transform.position - (Vector2)mousePosition;
 
-            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
-            if (hit.collider != null && hit.collider.gameObject == gameObject)
-            {
-                isDragging = true;
-                startPosition = transform.position;
-                offset = startPosition - mousePosition;
-            }
-        }
-        else if (Input.GetMouseButton(0) && isDragging)
-        {
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mousePosition.z = 0;
-            transform.position = mousePosition + offset;
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            isDragging = false;
-        }
+        // Allow free movement (remove any position constraints)
+        rb.constraints = RigidbodyConstraints2D.None;
+    }
+
+    private void OnMouseUp()
+    {
+        // When the mouse is released, stop dragging
+        isDragging = false;
+
+        // Apply a random torque to simulate a "sag" effect (optional for realism)
+        rb.AddTorque(Random.Range(-sagTorque, sagTorque));
+
+        // Re-enable gravity and let the object fall naturally
+        rb.gravityScale = 1;
+
+        // Apply constraints to freeze position if you want it to stay in place
+        // Remove this line if you want the object to move freely
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 }
