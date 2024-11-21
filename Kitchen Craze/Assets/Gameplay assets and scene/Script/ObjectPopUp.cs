@@ -26,12 +26,8 @@ public class CookingGameManager : MonoBehaviour
     [Header("Combinations Settings")]
     public List<Combination> combinations = new List<Combination>();
 
-    [Header("Game Progression")]
-    [Tooltip("Total number of dishes needed to complete the game.")]
-    public int totalDishes = 20;
-
     [Header("Delayed Object Spawning")]
-    [Tooltip("List of objects to spawn with delay when the required dishes are completed.")]
+    [Tooltip("List of objects to spawn with delay when all dishes are unlocked.")]
     public List<DelayedObject> delayedObjects = new List<DelayedObject>();
 
     [System.Serializable]
@@ -213,7 +209,10 @@ public class CookingGameManager : MonoBehaviour
     {
         if (combo.cookedObject != null && combo.cookedObject.CompareTag("Cooked"))
         {
+            // Deactivate and reactivate the cooked object to make it reappear
+            combo.cookedObject.SetActive(false);
             combo.cookedObject.SetActive(true);
+
             Debug.Log($"Activated: {combo.cookedObject.name}");
         }
 
@@ -234,9 +233,26 @@ public class CookingGameManager : MonoBehaviour
         completedDishes++;
         Debug.Log($"Unlocked panel for dish: {combo.cookedObject.name} (Total completed dishes: {completedDishes})");
 
-        if (completedDishes == totalDishes)
+        // Check if all dishes are unlocked
+        CheckAllDishesUnlocked();
+    }
+
+    private void CheckAllDishesUnlocked()
+    {
+        bool allUnlocked = true;
+
+        foreach (var combo in combinations)
         {
-            Debug.Log("All dishes are completed!");
+            if (combo.unlockedStateObject != null && !combo.unlockedStateObject.activeSelf)
+            {
+                allUnlocked = false;
+                break;
+            }
+        }
+
+        if (allUnlocked)
+        {
+            Debug.Log("All dishes are unlocked!");
             SpawnObjectsWithDelays();
         }
     }
@@ -304,17 +320,33 @@ public class CookingGameManager : MonoBehaviour
         ResetIngredientPosition(egg, eggStartPosition);
         ResetIngredientPosition(bacon, baconStartPosition);
         ResetIngredientPosition(cheese, cheeseStartPosition);
-        Debug.Log("Reset ingredient positions.");
+
+        // Reset combinations
+        foreach (var combo in combinations)
+        {
+            if (combo.cookedObject != null) combo.cookedObject.SetActive(false);
+            if (combo.lockedStateObject != null) combo.lockedStateObject.SetActive(true);
+            if (combo.unlockedStateObject != null) combo.unlockedStateObject.SetActive(false);
+        }
+
+        completedDishes = 0;
+        Debug.Log("Reset all combinations.");
+
+        // Hide mixObject and other related UI elements if needed
+        if (mixObject != null) mixObject.SetActive(false);
     }
 
     private void ResetIngredientPosition(GameObject ingredient, Vector3 startPosition)
     {
         if (ingredient != null)
         {
-            ingredient.SetActive(false); // Force refresh
             ingredient.transform.position = startPosition;
-            ingredient.SetActive(true);
-            Debug.Log($"Reset {ingredient.name} to position {startPosition}");
+            var renderer = ingredient.GetComponent<Renderer>();
+            var collider = ingredient.GetComponent<Collider2D>();
+
+            if (renderer != null) renderer.enabled = true;
+            if (collider != null) collider.enabled = true;
         }
     }
 }
+
