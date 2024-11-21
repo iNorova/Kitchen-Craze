@@ -47,6 +47,10 @@ public class CookingGameManager : MonoBehaviour
 
     private Camera mainCamera;
 
+    // Reset-specific fields
+    public GameObject egg, bacon, cheese; // Assign these in the Inspector
+    private Vector3 eggStartPosition, baconStartPosition, cheeseStartPosition;
+
     private void Start()
     {
         mainCamera = Camera.main;
@@ -79,6 +83,11 @@ public class CookingGameManager : MonoBehaviour
         {
             Debug.LogError("Mix Object is not assigned in the Inspector!");
         }
+
+        // Store initial positions of ingredients
+        if (egg != null) eggStartPosition = egg.transform.position;
+        if (bacon != null) baconStartPosition = bacon.transform.position;
+        if (cheese != null) cheeseStartPosition = cheese.transform.position;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -271,6 +280,41 @@ public class CookingGameManager : MonoBehaviour
         if (mixObject != null)
         {
             mixObject.SetActive(true);
+        }
+    }
+
+    // New Reset Method
+    public void ResetGameState()
+    {
+        Debug.Log("Game reset process started.");
+
+        // Reset current ingredients
+        currentIngredients.Clear();
+        currentIngredientNames.Clear();
+        Debug.Log("Cleared current ingredients.");
+
+        // Update the indicator
+        if (ingredientsTextBox != null)
+        {
+            ingredientsTextBox.text = "";
+            Debug.Log("Cleared the ingredient indicator.");
+        }
+
+        // Reset ingredient positions
+        ResetIngredientPosition(egg, eggStartPosition);
+        ResetIngredientPosition(bacon, baconStartPosition);
+        ResetIngredientPosition(cheese, cheeseStartPosition);
+        Debug.Log("Reset ingredient positions.");
+    }
+
+    private void ResetIngredientPosition(GameObject ingredient, Vector3 startPosition)
+    {
+        if (ingredient != null)
+        {
+            ingredient.SetActive(false); // Force refresh
+            ingredient.transform.position = startPosition;
+            ingredient.SetActive(true);
+            Debug.Log($"Reset {ingredient.name} to position {startPosition}");
         }
     }
 }

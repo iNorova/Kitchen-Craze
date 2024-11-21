@@ -4236,6 +4236,9 @@ MonoBehaviour:
     delayTime: 0
   - objectToSpawn: {fileID: 161823591}
     delayTime: 3
+  egg: {fileID: 0}
+  bacon: {fileID: 0}
+  cheese: {fileID: 0}
 --- !u!95 &1311775823
 Animator:
   serializedVersion: 7
@@ -4986,7 +4989,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSource: {fileID: 276689916}
   SFXSource: {fileID: 1052361316}
-  background: {fileID: 8300000, guid: 0ab7a471808ddf04f9e4a1da454ac817, type: 3}
+  background: {fileID: 8300000, guid: d0f17f85b5be3084b8dc738a4000e0f5, type: 3}
   buttonclick: {fileID: 0}
 --- !u!4 &1836527751
 Transform:
