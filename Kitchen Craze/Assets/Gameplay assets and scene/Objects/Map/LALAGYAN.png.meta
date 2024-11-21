@@ -1,13 +1,22 @@
 fileFormatVersion: 2
-guid: 58d1222c9c8e7ce4ebea46e6c6c99813
+guid: c303ea3a6fa7b44bc847373684b2abc2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2427702289256188518
-    second: OPTION CHOICES_0
+      213: -5920941720864486703
+    second: LALAGYAN_0
   - first:
-      213: 4355033937780792644
-    second: OPTION CHOICES_1
+      213: 5426113019939071710
+    second: LALAGYAN_1
+  - first:
+      213: -860890752672840272
+    second: LALAGYAN_2
+  - first:
+      213: -6047930818445086910
+    second: LALAGYAN_3
+  - first:
+      213: 4566921209076472727
+    second: LALAGYAN_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -129,13 +138,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: OPTION CHOICES_0
+      name: LALAGYAN_0
       rect:
         serializedVersion: 2
-        x: 129
-        y: 241
-        width: 892
-        height: 766
+        x: 1395
+        y: 859
+        width: 525
+        height: 35
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -144,20 +153,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a957b7461a11f4ed0800000000000000
-      internalID: -2427702289256188518
+      spriteID: 1da051810e694dda0800000000000000
+      internalID: -5920941720864486703
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OPTION CHOICES_1
+      name: LALAGYAN_1
       rect:
         serializedVersion: 2
-        x: 1192
-        y: 394
-        width: 12
-        height: 36
+        x: 952
+        y: 704
+        width: 327
+        height: 41
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,8 +175,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 44dd13eda40307c30800000000000000
-      internalID: 4355033937780792644
+      spriteID: ed62798fa0d6d4b40800000000000000
+      internalID: 5426113019939071710
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LALAGYAN_2
+      rect:
+        serializedVersion: 2
+        x: 1394
+        y: 606
+        width: 250
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b54480fb608d04f0800000000000000
+      internalID: -860890752672840272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LALAGYAN_3
+      rect:
+        serializedVersion: 2
+        x: 1669
+        y: 606
+        width: 251
+        height: 111
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24f6174c6fe611ca0800000000000000
+      internalID: -6047930818445086910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LALAGYAN_4
+      rect:
+        serializedVersion: 2
+        x: 1395
+        y: 349
+        width: 525
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79b5330a4a6f06f30800000000000000
+      internalID: 4566921209076472727
       vertices: []
       indices: 
       edges: []
@@ -185,9 +260,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      OPTION CHOICES_0: -2427702289256188518
-      OPTION CHOICES_1: 4355033937780792644
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

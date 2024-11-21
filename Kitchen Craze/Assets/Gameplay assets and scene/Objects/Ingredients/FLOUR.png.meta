@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 58d1222c9c8e7ce4ebea46e6c6c99813
+guid: facb865ef97a849a7b079032b4c4d2e7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2427702289256188518
-    second: OPTION CHOICES_0
-  - first:
-      213: 4355033937780792644
-    second: OPTION CHOICES_1
+      213: -3213966937553316804
+    second: FLOUR_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -129,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: OPTION CHOICES_0
+      name: FLOUR_0
       rect:
         serializedVersion: 2
-        x: 129
-        y: 241
-        width: 892
-        height: 766
+        x: 189
+        y: 136
+        width: 1301
+        height: 1787
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -144,30 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a957b7461a11f4ed0800000000000000
-      internalID: -2427702289256188518
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: OPTION CHOICES_1
-      rect:
-        serializedVersion: 2
-        x: 1192
-        y: 394
-        width: 12
-        height: 36
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 44dd13eda40307c30800000000000000
-      internalID: 4355033937780792644
+      spriteID: c34d84f3912b563d0800000000000000
+      internalID: -3213966937553316804
       vertices: []
       indices: 
       edges: []
@@ -185,9 +160,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      OPTION CHOICES_0: -2427702289256188518
-      OPTION CHOICES_1: 4355033937780792644
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
