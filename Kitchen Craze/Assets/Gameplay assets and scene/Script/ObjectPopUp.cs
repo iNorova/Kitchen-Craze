@@ -30,6 +30,17 @@ public class CookingGameManager : MonoBehaviour
     [Tooltip("Total number of dishes needed to complete the game.")]
     public int totalDishes = 20;
 
+    [Header("Delayed Object Spawning")]
+    [Tooltip("List of objects to spawn with delay when the required dishes are completed.")]
+    public List<DelayedObject> delayedObjects = new List<DelayedObject>();
+
+    [System.Serializable]
+    public class DelayedObject
+    {
+        public GameObject objectToSpawn; // The object to spawn
+        public float delayTime; // Delay time before spawning
+    }
+
     private int completedDishes = 0; // Tracks how many dishes are completed
     private List<string> currentIngredientNames = new List<string>();
     private List<GameObject> currentIngredients = new List<GameObject>();
@@ -217,7 +228,26 @@ public class CookingGameManager : MonoBehaviour
         if (completedDishes == totalDishes)
         {
             Debug.Log("All dishes are completed!");
-            ResetGame();
+            SpawnObjectsWithDelays();
+        }
+    }
+
+    private void SpawnObjectsWithDelays()
+    {
+        foreach (var delayedObject in delayedObjects)
+        {
+            StartCoroutine(SpawnObjectWithDelay(delayedObject));
+        }
+    }
+
+    private IEnumerator SpawnObjectWithDelay(DelayedObject delayedObject)
+    {
+        yield return new WaitForSeconds(delayedObject.delayTime);
+
+        if (delayedObject.objectToSpawn != null)
+        {
+            delayedObject.objectToSpawn.SetActive(true);
+            Debug.Log($"Spawned: {delayedObject.objectToSpawn.name}");
         }
     }
 
@@ -242,31 +272,5 @@ public class CookingGameManager : MonoBehaviour
         {
             mixObject.SetActive(true);
         }
-    }
-
-    public void ResetGame()
-    {
-        ClearIngredients();
-
-        foreach (var combo in combinations)
-        {
-            if (combo.cookedObject != null)
-            {
-                combo.cookedObject.SetActive(false);
-            }
-
-            if (combo.lockedStateObject != null)
-            {
-                combo.lockedStateObject.SetActive(true); // Reset to locked state
-            }
-
-            if (combo.unlockedStateObject != null)
-            {
-                combo.unlockedStateObject.SetActive(false); // Reset to hidden unlocked state
-            }
-        }
-
-        completedDishes = 0; // Reset progression
-        Debug.Log("Game reset!");
     }
 }

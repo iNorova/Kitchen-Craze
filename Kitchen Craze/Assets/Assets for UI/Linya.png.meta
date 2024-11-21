@@ -345,6 +345,32 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -2209,7 +2235,91 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Linya_0: -4018666946894096345
+      Linya_1: -8026898063404181474
+      Linya_10: -6765892099481515749
+      Linya_11: -4040793297246535706
+      Linya_12: -3151118170240538354
+      Linya_13: 6546214141456614995
+      Linya_14: -4956103881092966186
+      Linya_15: -3370436269763344769
+      Linya_16: -1111796444238003132
+      Linya_17: 8855574296077973266
+      Linya_18: 2882449354799739101
+      Linya_19: 8808641091772039784
+      Linya_2: 5882139375935857716
+      Linya_20: 1046162456311669596
+      Linya_21: -150308951556979891
+      Linya_22: 3348939459098778693
+      Linya_23: 5890318458938478160
+      Linya_24: -4977757229640547262
+      Linya_25: -8358340915534889232
+      Linya_26: 2776309143228463691
+      Linya_27: 6738151608902305371
+      Linya_28: 2188889162623773050
+      Linya_29: 5431238371971899982
+      Linya_3: 1995391289111995458
+      Linya_30: 295430670390737297
+      Linya_31: 4522042509624739834
+      Linya_32: -6162046838377920900
+      Linya_33: 5629952800527702590
+      Linya_34: -7342833157440107378
+      Linya_35: -5159017381814708767
+      Linya_36: 3956459472660891139
+      Linya_37: 6607519317594588509
+      Linya_38: -6634151609340037736
+      Linya_39: -3166112715745337654
+      Linya_4: 4029560579680073999
+      Linya_40: -3875401724615308658
+      Linya_41: -1104816756145731067
+      Linya_42: -3270826682910698737
+      Linya_43: -3279657510650993817
+      Linya_44: 7268111297201932274
+      Linya_45: -7912788472158837641
+      Linya_46: -6838023866639111289
+      Linya_47: 8870105170231256709
+      Linya_48: -7150873153997356347
+      Linya_49: -2280176422176076331
+      Linya_5: 3289870025147791420
+      Linya_50: -7102324371427850039
+      Linya_51: -8884398018218254044
+      Linya_52: -557331718821407860
+      Linya_53: 76759445424589766
+      Linya_54: 6742321745035661802
+      Linya_55: 7138735084258169909
+      Linya_56: 8547632883046170851
+      Linya_57: -2030529786502997736
+      Linya_58: -8477564347317538194
+      Linya_59: 910211735518900634
+      Linya_6: -5112906802096500028
+      Linya_60: 4340045526289567890
+      Linya_61: -6646964179544868537
+      Linya_62: 75580565140062829
+      Linya_63: -2679184010964164921
+      Linya_64: 8748583560133746644
+      Linya_65: -5131122302156340655
+      Linya_66: 136186471730086669
+      Linya_67: 7853808804863010621
+      Linya_68: 270704566569446646
+      Linya_69: -1553393669398331016
+      Linya_7: 6463635848316656123
+      Linya_70: 8309747364176370568
+      Linya_71: -8595635509844376079
+      Linya_72: -8357961116690151466
+      Linya_73: -8724037862650097711
+      Linya_74: 1957412606750274741
+      Linya_75: 2716655557034362907
+      Linya_76: 7948988748887027007
+      Linya_77: 6098168180802029384
+      Linya_78: -7117235090182095183
+      Linya_79: 5172312853657342370
+      Linya_8: 3884512172389653220
+      Linya_80: -3484361214751381335
+      Linya_81: 6711770203645381216
+      Linya_82: -1815983860436270771
+      Linya_83: -3367899431124801172
+      Linya_9: 5634508830914960624
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
