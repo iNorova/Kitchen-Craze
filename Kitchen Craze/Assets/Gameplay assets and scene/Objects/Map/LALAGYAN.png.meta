@@ -260,7 +260,12 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      LALAGYAN_0: -5920941720864486703
+      LALAGYAN_1: 5426113019939071710
+      LALAGYAN_2: -860890752672840272
+      LALAGYAN_3: -6047930818445086910
+      LALAGYAN_4: 4566921209076472727
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
