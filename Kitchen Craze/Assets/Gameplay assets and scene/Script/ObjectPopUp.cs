@@ -37,15 +37,15 @@ public class CookingGameManager : MonoBehaviour
         public float delayTime; // Delay time before spawning
     }
 
+    [Header("No Combination Detected")]
+    [Tooltip("The object to show when no valid combination is found.")]
+    public GameObject noCombinationObject;
+
     private int completedDishes = 0; // Tracks how many dishes are completed
     private List<string> currentIngredientNames = new List<string>();
     private List<GameObject> currentIngredients = new List<GameObject>();
 
     private Camera mainCamera;
-
-    // Reset-specific fields
-    public GameObject egg, bacon, cheese; // Assign these in the Inspector
-    private Vector3 eggStartPosition, baconStartPosition, cheeseStartPosition;
 
     private void Start()
     {
@@ -80,10 +80,11 @@ public class CookingGameManager : MonoBehaviour
             Debug.LogError("Mix Object is not assigned in the Inspector!");
         }
 
-        // Store initial positions of ingredients
-        if (egg != null) eggStartPosition = egg.transform.position;
-        if (bacon != null) baconStartPosition = bacon.transform.position;
-        if (cheese != null) cheeseStartPosition = cheese.transform.position;
+        // Ensure noCombinationObject is hidden initially
+        if (noCombinationObject != null)
+        {
+            noCombinationObject.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -186,7 +187,12 @@ public class CookingGameManager : MonoBehaviour
             }
         }
 
-        Debug.LogWarning("No matching combination found!");
+        // No valid combination found, show the noCombinationObject
+        if (noCombinationObject != null)
+        {
+            noCombinationObject.SetActive(true);
+            Debug.Log("No combination detected. Showing the no combination object.");
+        }
     }
 
     private bool IsCombinationMatch(List<GameObject> requiredIngredients)
@@ -298,55 +304,4 @@ public class CookingGameManager : MonoBehaviour
             mixObject.SetActive(true);
         }
     }
-
-    // New Reset Method
-    public void ResetGameState()
-    {
-        Debug.Log("Game reset process started.");
-
-        // Reset current ingredients
-        currentIngredients.Clear();
-        currentIngredientNames.Clear();
-        Debug.Log("Cleared current ingredients.");
-
-        // Update the indicator
-        if (ingredientsTextBox != null)
-        {
-            ingredientsTextBox.text = "";
-            Debug.Log("Cleared the ingredient indicator.");
-        }
-
-        // Reset ingredient positions
-        ResetIngredientPosition(egg, eggStartPosition);
-        ResetIngredientPosition(bacon, baconStartPosition);
-        ResetIngredientPosition(cheese, cheeseStartPosition);
-
-        // Reset combinations
-        foreach (var combo in combinations)
-        {
-            if (combo.cookedObject != null) combo.cookedObject.SetActive(false);
-            if (combo.lockedStateObject != null) combo.lockedStateObject.SetActive(true);
-            if (combo.unlockedStateObject != null) combo.unlockedStateObject.SetActive(false);
-        }
-
-        completedDishes = 0;
-        Debug.Log("Reset all combinations.");
-
-        // Hide mixObject and other related UI elements if needed
-        if (mixObject != null) mixObject.SetActive(false);
-    }
-
-    private void ResetIngredientPosition(GameObject ingredient, Vector3 startPosition)
-    {
-        if (ingredient != null)
-        {
-            ingredient.transform.position = startPosition;
-            var renderer = ingredient.GetComponent<Renderer>();
-            var collider = ingredient.GetComponent<Collider2D>();
-
-            if (renderer != null) renderer.enabled = true;
-            if (collider != null) collider.enabled = true;
-        }
-    }
 }
-
