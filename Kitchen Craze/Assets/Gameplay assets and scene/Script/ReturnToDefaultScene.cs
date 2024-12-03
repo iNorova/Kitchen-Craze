@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using System.Collections.Generic; // Add this to use List<T>
+using System.Collections.Generic;
 
 #if UNITY_EDITOR
 using UnityEditor; // Required for using SceneAsset
@@ -165,34 +165,38 @@ public class ReturnToSpecificScene : MonoBehaviour
     }
 
     public void ResetGame()
+{
+    // Reset all except panels in the exclude list
+    var gameManagers = Object.FindObjectsByType<CookingGameManager>(FindObjectsSortMode.None); // Updated method
+
+    foreach (var gameManager in gameManagers)
     {
-        // Reset all except panels in the exclude list
-        var gameManagers = Object.FindObjectsByType<CookingGameManager>(FindObjectsSortMode.None); // Updated method
-        foreach (var gameManager in gameManagers)
+        foreach (var combo in gameManager.combinations)
         {
-            foreach (var combo in gameManager.combinations)
+            // Reset the cooked object only if it's NOT in the exclusion list
+            if (combo.cookedObject != null && !panelsToExcludeFromReset.Contains(combo.cookedObject))
             {
-                if (!panelsToExcludeFromReset.Contains(combo.lockedStateObject))
-                {
-                    if (combo.cookedObject != null)
-                    {
-                        combo.cookedObject.SetActive(false);
-                    }
+                combo.cookedObject.SetActive(false); // Reset to default state
+            }
 
-                    if (combo.lockedStateObject != null)
-                    {
-                        combo.lockedStateObject.SetActive(true); // Reset to locked state
-                    }
+            // Reset the locked state object only if it's NOT in the exclusion list
+            if (combo.lockedStateObject != null && !panelsToExcludeFromReset.Contains(combo.lockedStateObject))
+            {
+                combo.lockedStateObject.SetActive(true); // Reset to locked state
+            }
 
-                    if (combo.unlockedStateObject != null)
-                    {
-                        combo.unlockedStateObject.SetActive(false); // Reset to hidden unlocked state
-                    }
-                }
+            // Reset the unlocked state object only if it's NOT in the exclusion list
+            if (combo.unlockedStateObject != null && !panelsToExcludeFromReset.Contains(combo.unlockedStateObject))
+            {
+                combo.unlockedStateObject.SetActive(false); // Reset to hidden unlocked state
             }
         }
-
-        completedDishes = 0; // Reset progression
-        Debug.Log("Game reset, except specified panels and their contents!");
     }
+
+    completedDishes = 0; // Reset progression
+    Debug.Log("Game reset, except specified panels and their contents!");
 }
+
+
+}
+
