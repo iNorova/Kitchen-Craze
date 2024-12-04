@@ -8,7 +8,7 @@ TagManager:
   - PauseAsset
   - Cooked
   - Basket
-  - Cookbook
+  - Exclude
   layers:
   - Default
   - TransparentFX

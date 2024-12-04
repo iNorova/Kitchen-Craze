@@ -1,5 +1,5 @@
 using UnityEngine;
-using TMPro; // For TextMeshPro
+using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -8,7 +8,7 @@ public class CookingGameManager : MonoBehaviour
     [Header("UI Elements")]
     public TextMeshProUGUI ingredientsTextBox;
 
-    [Tooltip("The object that will be clicked/touched to process the mix (e.g., the pan).")]
+    [Tooltip("The object that will be clicked/touched to process the mix (e.g., the pot).")]
     public GameObject mixObject;
 
     [Tooltip("Delay in seconds before processing the mix.")]
@@ -17,54 +17,48 @@ public class CookingGameManager : MonoBehaviour
     [System.Serializable]
     public class Combination
     {
-        public List<GameObject> ingredientObjects; // Ingredients needed for this combination
-        public GameObject cookedObject; // Resulting object (e.g., dish) to activate
-        public GameObject lockedStateObject; // Object representing the locked state in the panel
-        public GameObject unlockedStateObject; // Object representing the unlocked state in the panel
+        public List<GameObject> ingredientObjects;
+        public GameObject cookedObject;
+        public GameObject lockedStateObject;
+        public GameObject unlockedStateObject;
     }
 
     [Header("Combinations Settings")]
     public List<Combination> combinations = new List<Combination>();
 
-    [Header("Delayed Object Spawning")]
-    [Tooltip("List of objects to spawn with delay when all dishes are unlocked.")]
-    public List<DelayedObject> delayedObjects = new List<DelayedObject>();
+    [Header("No Combination Objects")]
+    public List<GameObject> objectsToDisplayOnNoCombination = new List<GameObject>();
+    public List<TextMeshProUGUI> textMeshProObjectsToHide = new List<TextMeshProUGUI>();
 
-    [System.Serializable]
-    public class DelayedObject
-    {
-        public GameObject objectToSpawn; // The object to spawn
-        public float delayTime; // Delay time before spawning
-    }
+    [Tooltip("Time (in seconds) the objects will be visible before hiding their sprite renderer.")]
+    public float noCombinationDisplayTime = 3f;
 
-    [Header("No Combination Detected")]
-    [Tooltip("The object to show when no valid combination is found.")]
-    public GameObject noCombinationObject;
+    [Tooltip("Time (in seconds) to wait before showing the no combination objects after the pot is pressed.")]
+    public float potPressWaitTime = 1f;
 
-    private int completedDishes = 0; // Tracks how many dishes are completed
+    private int completedDishes = 0;
     private List<string> currentIngredientNames = new List<string>();
     private List<GameObject> currentIngredients = new List<GameObject>();
 
     private Camera mainCamera;
+    private bool isNoCombinationDisplayed = false;
 
     private void Start()
     {
         mainCamera = Camera.main;
 
-        // Initialize all locked/unlocked objects
         foreach (var combo in combinations)
         {
             if (combo.cookedObject != null)
                 combo.cookedObject.SetActive(false);
 
             if (combo.lockedStateObject != null)
-                combo.lockedStateObject.SetActive(true); // Show locked state initially
+                combo.lockedStateObject.SetActive(true);
 
             if (combo.unlockedStateObject != null)
-                combo.unlockedStateObject.SetActive(false); // Hide unlocked state initially
+                combo.unlockedStateObject.SetActive(false);
         }
 
-        // Ensure Mix Object (Pan) is initially active
         if (mixObject != null)
         {
             var collider = mixObject.GetComponent<Collider2D>();
@@ -78,12 +72,6 @@ public class CookingGameManager : MonoBehaviour
         else
         {
             Debug.LogError("Mix Object is not assigned in the Inspector!");
-        }
-
-        // Ensure noCombinationObject is hidden initially
-        if (noCombinationObject != null)
-        {
-            noCombinationObject.SetActive(false);
         }
     }
 
@@ -104,7 +92,6 @@ public class CookingGameManager : MonoBehaviour
             currentIngredients.Add(ingredient);
             UpdateTextBox();
 
-            // Check if two or more ingredients are in the pan, enable the Mix Object
             if (currentIngredients.Count >= 2)
             {
                 EnableMixObject();
@@ -171,6 +158,13 @@ public class CookingGameManager : MonoBehaviour
 
     private void ProcessMix()
     {
+        if (currentIngredients.Count == 0)
+        {
+            Debug.Log("No ingredients in the pot!");
+            DisplayNoCombinationObjects();
+            return;
+        }
+
         StartCoroutine(MixCoroutine());
     }
 
@@ -187,12 +181,9 @@ public class CookingGameManager : MonoBehaviour
             }
         }
 
-        // No valid combination found, show the noCombinationObject
-        if (noCombinationObject != null)
-        {
-            noCombinationObject.SetActive(true);
-            Debug.Log("No combination detected. Showing the no combination object.");
-        }
+        Debug.Log("No valid combination detected.");
+        DisplayNoCombinationObjects();
+        ClearIngredients();
     }
 
     private bool IsCombinationMatch(List<GameObject> requiredIngredients)
@@ -219,27 +210,41 @@ public class CookingGameManager : MonoBehaviour
             combo.cookedObject.SetActive(false);
             combo.cookedObject.SetActive(true);
 
+            // Ensure animation is triggered
+            PlayObjectAnimation(combo.cookedObject);
+
             Debug.Log($"Activated: {combo.cookedObject.name}");
         }
 
-        // Unlock associated panels
         UnlockPanels(combo);
-
         ClearIngredients();
+    }
+
+    private void PlayObjectAnimation(GameObject obj)
+    {
+        Animator animator = obj.GetComponent<Animator>();
+        if (animator != null)
+        {
+            // Reset the animation to make sure it plays again
+            animator.Play("YourAnimationState", -1, 0f);
+        }
+        else
+        {
+            Debug.LogWarning("Animator component not found on " + obj.name);
+        }
     }
 
     private void UnlockPanels(Combination combo)
     {
         if (combo.lockedStateObject != null)
-            combo.lockedStateObject.SetActive(false); // Hide locked state
+            combo.lockedStateObject.SetActive(false);
 
         if (combo.unlockedStateObject != null)
-            combo.unlockedStateObject.SetActive(true); // Show unlocked state
+            combo.unlockedStateObject.SetActive(true);
 
         completedDishes++;
         Debug.Log($"Unlocked panel for dish: {combo.cookedObject.name} (Total completed dishes: {completedDishes})");
 
-        // Check if all dishes are unlocked
         CheckAllDishesUnlocked();
     }
 
@@ -259,49 +264,76 @@ public class CookingGameManager : MonoBehaviour
         if (allUnlocked)
         {
             Debug.Log("All dishes are unlocked!");
-            SpawnObjectsWithDelays();
-        }
-    }
-
-    private void SpawnObjectsWithDelays()
-    {
-        foreach (var delayedObject in delayedObjects)
-        {
-            StartCoroutine(SpawnObjectWithDelay(delayedObject));
-        }
-    }
-
-    private IEnumerator SpawnObjectWithDelay(DelayedObject delayedObject)
-    {
-        yield return new WaitForSeconds(delayedObject.delayTime);
-
-        if (delayedObject.objectToSpawn != null)
-        {
-            delayedObject.objectToSpawn.SetActive(true);
-            Debug.Log($"Spawned: {delayedObject.objectToSpawn.name}");
         }
     }
 
     private void ClearIngredients()
     {
-        foreach (var ingredient in currentIngredients)
+        if (currentIngredients.Count > 0)
         {
-            var renderer = ingredient.GetComponent<Renderer>();
-            var collider = ingredient.GetComponent<Collider2D>();
+            foreach (var ingredient in currentIngredients)
+            {
+                var renderer = ingredient.GetComponent<Renderer>();
+                var collider = ingredient.GetComponent<Collider2D>();
 
-            if (renderer != null) renderer.enabled = true;
-            if (collider != null) collider.enabled = true;
+                if (renderer != null) renderer.enabled = true;
+                if (collider != null) collider.enabled = true;
 
-            ingredient.transform.position = new Vector3(ingredient.transform.position.x, ingredient.transform.position.y, 0);
+                ingredient.transform.position = new Vector3(ingredient.transform.position.x, ingredient.transform.position.y, 0);
+            }
+
+            currentIngredientNames.Clear();
+            currentIngredients.Clear();
+            UpdateTextBox();
         }
-
-        currentIngredientNames.Clear();
-        currentIngredients.Clear();
-        UpdateTextBox();
 
         if (mixObject != null)
         {
             mixObject.SetActive(true);
         }
+    }
+
+    private void DisplayNoCombinationObjects()
+    {
+        foreach (var obj in objectsToDisplayOnNoCombination)
+        {
+            obj.SetActive(true);
+            var spriteRenderer = obj.GetComponent<SpriteRenderer>();
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.enabled = true;
+            }
+            PlayObjectAnimation(obj); // Play animation when showing object
+        }
+
+        // Handle TextMeshProUGUI objects
+        foreach (var textObj in textMeshProObjectsToHide)
+        {
+            textObj.gameObject.SetActive(true); // Activate the TextMeshProUGUI objects
+        }
+
+        StartCoroutine(HideNoCombinationObjectsAfterDelay());
+        isNoCombinationDisplayed = true;
+    }
+
+    private IEnumerator HideNoCombinationObjectsAfterDelay()
+    {
+        yield return new WaitForSeconds(noCombinationDisplayTime);
+
+        // Hide SpriteRenderer components
+        foreach (var obj in objectsToDisplayOnNoCombination)
+        {
+            var spriteRenderer = obj.GetComponent<SpriteRenderer>();
+            if (spriteRenderer != null)
+                spriteRenderer.enabled = false;
+        }
+
+        // Hide TextMeshProUGUI components
+        foreach (var textObj in textMeshProObjectsToHide)
+        {
+            textObj.gameObject.SetActive(false); // Hide the TextMeshProUGUI objects
+        }
+
+        isNoCombinationDisplayed = false;
     }
 }
