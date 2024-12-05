@@ -293,7 +293,6 @@ GameObject:
   - component: {fileID: 105878508}
   - component: {fileID: 105878509}
   - component: {fileID: 105878511}
-  - component: {fileID: 105878510}
   m_Layer: 0
   m_Name: 1_0
   m_TagString: Untagged
@@ -397,97 +396,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &105878510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 105878506}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: 
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &105878511
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -495,7 +403,7 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 105878506}
-  m_CullTransparentMesh: 1
+  m_CullTransparentMesh: 0
 --- !u!1 &152053071
 GameObject:
   m_ObjectHideFlags: 0
@@ -1645,7 +1553,6 @@ GameObject:
   - component: {fileID: 378305342}
   - component: {fileID: 378305341}
   - component: {fileID: 378305340}
-  - component: {fileID: 378305344}
   m_Layer: 6
   m_Name: Longganisa
   m_TagString: FoodItem
@@ -1812,20 +1719,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &378305344
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 378305338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e9e0365e9b97b6438e3203b0c4b50f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ingredientName: 
-  isCooked: 0
 --- !u!1 &463981980
 GameObject:
   m_ObjectHideFlags: 0
@@ -1839,7 +1732,6 @@ GameObject:
   - component: {fileID: 463981985}
   - component: {fileID: 463981984}
   - component: {fileID: 463981983}
-  - component: {fileID: 463981987}
   m_Layer: 6
   m_Name: Shrimp
   m_TagString: FoodItem
@@ -2006,20 +1898,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &463981987
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 463981980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e9e0365e9b97b6438e3203b0c4b50f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ingredientName: 
-  isCooked: 0
 --- !u!1 &486971324
 GameObject:
   m_ObjectHideFlags: 0
@@ -3127,7 +3005,6 @@ GameObject:
   - component: {fileID: 670407408}
   - component: {fileID: 670407411}
   - component: {fileID: 670407410}
-  - component: {fileID: 670407412}
   m_Layer: 6
   m_Name: Fish
   m_TagString: FoodItem
@@ -3294,20 +3171,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 6.5154314, y: 7.12213}
   m_EdgeRadius: 0
---- !u!114 &670407412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 670407405}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e9e0365e9b97b6438e3203b0c4b50f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ingredientName: 
-  isCooked: 0
 --- !u!1 &680691239
 GameObject:
   m_ObjectHideFlags: 0
@@ -3701,7 +3564,6 @@ GameObject:
   - component: {fileID: 769804681}
   - component: {fileID: 769804680}
   - component: {fileID: 769804683}
-  - component: {fileID: 769804684}
   m_Layer: 6
   m_Name: Butter
   m_TagString: FoodItem
@@ -3718,7 +3580,7 @@ Transform:
   m_GameObject: {fileID: 769804678}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9, y: -3.59, z: 9.941493}
+  m_LocalPosition: {x: 4.91, y: 1.15, z: 9.941493}
   m_LocalScale: {x: 0.14, y: 0.15735316, z: 0.53394353}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -3857,21 +3719,7 @@ MonoBehaviour:
   dragSpeed: 10
   sagTorque: 50
   rotationDamping: 5
-  potTag: Pot
---- !u!114 &769804684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 769804678}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e9e0365e9b97b6438e3203b0c4b50f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ingredientName: Butter
-  isCooked: 0
+  potTag: Basket
 --- !u!1 &777118561
 GameObject:
   m_ObjectHideFlags: 0
@@ -5196,7 +5044,6 @@ GameObject:
   - component: {fileID: 1015725965}
   - component: {fileID: 1015725964}
   - component: {fileID: 1015725963}
-  - component: {fileID: 1015725967}
   m_Layer: 6
   m_Name: 'Sugar '
   m_TagString: FoodItem
@@ -5363,20 +5210,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1015725967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1015725960}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e9e0365e9b97b6438e3203b0c4b50f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ingredientName: 
-  isCooked: 0
 --- !u!1 &1052361315
 GameObject:
   m_ObjectHideFlags: 0
@@ -6536,8 +6369,6 @@ MonoBehaviour:
     unlockedStateObject: {fileID: 1448808027}
   objectsToDisplayOnNoCombination:
   - {fileID: 105878506}
-  - {fileID: 0}
-  textMeshProObjectsToHide: []
   noCombinationDisplayTime: 3
   potPressWaitTime: 2
 --- !u!95 &1311775823
@@ -6645,7 +6476,6 @@ GameObject:
   - component: {fileID: 1334143714}
   - component: {fileID: 1334143713}
   - component: {fileID: 1334143712}
-  - component: {fileID: 1334143716}
   m_Layer: 6
   m_Name: Chicken
   m_TagString: FoodItem
@@ -6812,20 +6642,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1334143716
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1334143709}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e9e0365e9b97b6438e3203b0c4b50f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ingredientName: 
-  isCooked: 0
 --- !u!1 &1390353800
 GameObject:
   m_ObjectHideFlags: 0
@@ -7248,7 +7064,6 @@ GameObject:
   - component: {fileID: 1529769831}
   - component: {fileID: 1529769830}
   - component: {fileID: 1529769829}
-  - component: {fileID: 1529769833}
   m_Layer: 6
   m_Name: Egg
   m_TagString: FoodItem
@@ -7405,20 +7220,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1529769833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1529769827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e9e0365e9b97b6438e3203b0c4b50f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ingredientName: 
-  isCooked: 0
 --- !u!1 &1542332470
 GameObject:
   m_ObjectHideFlags: 0
@@ -7566,7 +7367,6 @@ GameObject:
   - component: {fileID: 1547025634}
   - component: {fileID: 1547025633}
   - component: {fileID: 1547025632}
-  - component: {fileID: 1547025636}
   m_Layer: 6
   m_Name: Coconut Milk
   m_TagString: FoodItem
@@ -7723,20 +7523,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1547025636
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1547025630}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e9e0365e9b97b6438e3203b0c4b50f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ingredientName: 
-  isCooked: 0
 --- !u!1 &1568622514
 GameObject:
   m_ObjectHideFlags: 0
@@ -7924,7 +7710,6 @@ GameObject:
   - component: {fileID: 1582669988}
   - component: {fileID: 1582669987}
   - component: {fileID: 1582669986}
-  - component: {fileID: 1582669990}
   m_Layer: 6
   m_Name: Milk
   m_TagString: FoodItem
@@ -8091,20 +7876,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1582669990
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1582669984}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e9e0365e9b97b6438e3203b0c4b50f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ingredientName: 
-  isCooked: 0
 --- !u!1 &1601095780
 GameObject:
   m_ObjectHideFlags: 0
@@ -8269,7 +8040,6 @@ GameObject:
   - component: {fileID: 1703928151}
   - component: {fileID: 1703928150}
   - component: {fileID: 1703928149}
-  - component: {fileID: 1703928153}
   m_Layer: 6
   m_Name: Salt
   m_TagString: FoodItem
@@ -8436,20 +8206,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1703928153
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1703928146}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e9e0365e9b97b6438e3203b0c4b50f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ingredientName: 
-  isCooked: 0
 --- !u!1 &1717637363
 GameObject:
   m_ObjectHideFlags: 0
@@ -9391,7 +9147,6 @@ GameObject:
   - component: {fileID: 2039279775}
   - component: {fileID: 2039279774}
   - component: {fileID: 2039279773}
-  - component: {fileID: 2039279776}
   m_Layer: 6
   m_Name: Flour
   m_TagString: FoodItem
@@ -9558,20 +9313,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
---- !u!114 &2039279776
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2039279768}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e9e0365e9b97b6438e3203b0c4b50f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ingredientName: 
-  isCooked: 0
 --- !u!1 &2067564904
 GameObject:
   m_ObjectHideFlags: 0

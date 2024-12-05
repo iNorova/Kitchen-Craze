@@ -28,7 +28,6 @@ public class CookingGameManager : MonoBehaviour
 
     [Header("No Combination Objects")]
     public List<GameObject> objectsToDisplayOnNoCombination = new List<GameObject>();
-    public List<TextMeshProUGUI> textMeshProObjectsToHide = new List<TextMeshProUGUI>();
 
     [Tooltip("Time (in seconds) the objects will be visible before hiding their sprite renderer.")]
     public float noCombinationDisplayTime = 3f;
@@ -114,7 +113,14 @@ public class CookingGameManager : MonoBehaviour
 
     private void UpdateTextBox()
     {
-        ingredientsTextBox.text = string.Join(", ", currentIngredientNames);
+        if (currentIngredientNames.Count > 0)
+        {
+            ingredientsTextBox.text = "Ingredients: " + string.Join(", ", currentIngredientNames);
+        }
+        else
+        {
+            ingredientsTextBox.text = "No ingredients added.";
+        }
     }
 
     private void EnableMixObject()
@@ -161,6 +167,7 @@ public class CookingGameManager : MonoBehaviour
         if (currentIngredients.Count == 0)
         {
             Debug.Log("No ingredients in the pot!");
+            ClearTextBox();
             DisplayNoCombinationObjects();
             return;
         }
@@ -182,6 +189,7 @@ public class CookingGameManager : MonoBehaviour
         }
 
         Debug.Log("No valid combination detected.");
+        ClearTextBox();
         DisplayNoCombinationObjects();
         ClearIngredients();
     }
@@ -206,32 +214,12 @@ public class CookingGameManager : MonoBehaviour
     {
         if (combo.cookedObject != null && combo.cookedObject.CompareTag("Cooked"))
         {
-            // Deactivate and reactivate the cooked object to make it reappear
-            combo.cookedObject.SetActive(false);
             combo.cookedObject.SetActive(true);
-
-            // Ensure animation is triggered
-            PlayObjectAnimation(combo.cookedObject);
-
             Debug.Log($"Activated: {combo.cookedObject.name}");
         }
 
         UnlockPanels(combo);
         ClearIngredients();
-    }
-
-    private void PlayObjectAnimation(GameObject obj)
-    {
-        Animator animator = obj.GetComponent<Animator>();
-        if (animator != null)
-        {
-            // Reset the animation to make sure it plays again
-            animator.Play("YourAnimationState", -1, 0f);
-        }
-        else
-        {
-            Debug.LogWarning("Animator component not found on " + obj.name);
-        }
     }
 
     private void UnlockPanels(Combination combo)
@@ -284,12 +272,21 @@ public class CookingGameManager : MonoBehaviour
 
             currentIngredientNames.Clear();
             currentIngredients.Clear();
-            UpdateTextBox();
         }
 
         if (mixObject != null)
         {
             mixObject.SetActive(true);
+        }
+
+        UpdateTextBox();
+    }
+
+    private void ClearTextBox()
+    {
+        if (ingredientsTextBox != null)
+        {
+            ingredientsTextBox.text = "No ingredients added.";
         }
     }
 
@@ -303,13 +300,6 @@ public class CookingGameManager : MonoBehaviour
             {
                 spriteRenderer.enabled = true;
             }
-            PlayObjectAnimation(obj); // Play animation when showing object
-        }
-
-        // Handle TextMeshProUGUI objects
-        foreach (var textObj in textMeshProObjectsToHide)
-        {
-            textObj.gameObject.SetActive(true); // Activate the TextMeshProUGUI objects
         }
 
         StartCoroutine(HideNoCombinationObjectsAfterDelay());
@@ -320,18 +310,11 @@ public class CookingGameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(noCombinationDisplayTime);
 
-        // Hide SpriteRenderer components
         foreach (var obj in objectsToDisplayOnNoCombination)
         {
             var spriteRenderer = obj.GetComponent<SpriteRenderer>();
             if (spriteRenderer != null)
                 spriteRenderer.enabled = false;
-        }
-
-        // Hide TextMeshProUGUI components
-        foreach (var textObj in textMeshProObjectsToHide)
-        {
-            textObj.gameObject.SetActive(false); // Hide the TextMeshProUGUI objects
         }
 
         isNoCombinationDisplayed = false;
