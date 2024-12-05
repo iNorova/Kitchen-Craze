@@ -14,6 +14,12 @@ public class CookingGameManager : MonoBehaviour
     [Tooltip("Delay in seconds before processing the mix.")]
     public float mixDelay = 4f;
 
+    [Header("No Combination Objects")]
+    public List<GameObject> objectsToDisplayOnNoCombination = new List<GameObject>();
+
+    [Tooltip("Time (in seconds) the objects will be visible before hiding them.")]
+    public float deactivationDelay = 1f;  // Adjustable timer for deactivation
+
     [System.Serializable]
     public class Combination
     {
@@ -26,21 +32,11 @@ public class CookingGameManager : MonoBehaviour
     [Header("Combinations Settings")]
     public List<Combination> combinations = new List<Combination>();
 
-    [Header("No Combination Objects")]
-    public List<GameObject> objectsToDisplayOnNoCombination = new List<GameObject>();
-
-    [Tooltip("Time (in seconds) the objects will be visible before hiding their sprite renderer.")]
-    public float noCombinationDisplayTime = 3f;
-
-    [Tooltip("Time (in seconds) to wait before showing the no combination objects after the pot is pressed.")]
-    public float potPressWaitTime = 1f;
-
     private int completedDishes = 0;
     private List<string> currentIngredientNames = new List<string>();
     private List<GameObject> currentIngredients = new List<GameObject>();
 
     private Camera mainCamera;
-    private bool isNoCombinationDisplayed = false;
 
     private void Start()
     {
@@ -264,10 +260,15 @@ public class CookingGameManager : MonoBehaviour
                 var renderer = ingredient.GetComponent<Renderer>();
                 var collider = ingredient.GetComponent<Collider2D>();
 
+                // Reset the ingredient to its original state.
                 if (renderer != null) renderer.enabled = true;
                 if (collider != null) collider.enabled = true;
 
+                // Reset position to the original position or some designated spawn point (e.g., ingredient's start position)
                 ingredient.transform.position = new Vector3(ingredient.transform.position.x, ingredient.transform.position.y, 0);
+
+                // Optionally, you can reset the rotation if needed.
+                ingredient.transform.rotation = Quaternion.identity;
             }
 
             currentIngredientNames.Clear();
@@ -292,6 +293,13 @@ public class CookingGameManager : MonoBehaviour
 
     private void DisplayNoCombinationObjects()
     {
+        // Call the function to display and hide objects after each press.
+        ToggleNoCombinationObjects();
+    }
+
+    private void ToggleNoCombinationObjects()
+    {
+        // Show the no combination objects.
         foreach (var obj in objectsToDisplayOnNoCombination)
         {
             obj.SetActive(true);
@@ -302,21 +310,23 @@ public class CookingGameManager : MonoBehaviour
             }
         }
 
+        // Hide the objects after the deactivationDelay time.
         StartCoroutine(HideNoCombinationObjectsAfterDelay());
-        isNoCombinationDisplayed = true;
     }
 
     private IEnumerator HideNoCombinationObjectsAfterDelay()
     {
-        yield return new WaitForSeconds(noCombinationDisplayTime);
+        yield return new WaitForSeconds(deactivationDelay);  // Use the adjustable timer for deactivation
 
+        // Hide the objects.
         foreach (var obj in objectsToDisplayOnNoCombination)
         {
+            obj.SetActive(false);
             var spriteRenderer = obj.GetComponent<SpriteRenderer>();
             if (spriteRenderer != null)
+            {
                 spriteRenderer.enabled = false;
+            }
         }
-
-        isNoCombinationDisplayed = false;
     }
 }
