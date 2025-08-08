@@ -17,6 +17,10 @@ public class CookingGameManager : MonoBehaviour
     [Header("No Combination Objects")]
     public List<GameObject> objectsToDisplayOnNoCombination = new List<GameObject>();
 
+    [Header("Trash Objects")]
+    [Tooltip("List of 3 trash objects to randomly select from when no valid combination is found.")]
+    public List<GameObject> trashObjects = new List<GameObject>();
+
     [Tooltip("Time (in seconds) the objects will be visible before hiding them.")]
     public float deactivationDelay = 1f;  // Adjustable timer for deactivation
 
@@ -37,10 +41,18 @@ public class CookingGameManager : MonoBehaviour
     private List<GameObject> currentIngredients = new List<GameObject>();
 
     private Camera mainCamera;
+    
+    // Store all ingredient references for respawning
+    private List<DragAndSwing> allIngredientReferences = new List<DragAndSwing>();
 
     private void Start()
     {
         mainCamera = Camera.main;
+
+        // Find and store all ingredient references
+        DragAndSwing[] allIngredients = FindObjectsOfType<DragAndSwing>();
+        allIngredientReferences.AddRange(allIngredients);
+        Debug.Log($"Found {allIngredientReferences.Count} ingredients to manage");
 
         foreach (var combo in combinations)
         {
@@ -93,7 +105,30 @@ public class CookingGameManager : MonoBehaviour
             }
         }
 
-        HideIngredient(ingredient);
+        // Hide the ingredient when it's added to the pot
+        ingredient.SetActive(false);
+    }
+
+    // Call this method when ingredient dragging starts
+    public void OnIngredientDragStart(GameObject ingredient)
+    {
+        var spriteRenderer = ingredient.GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            // Set high sorting order to appear on top of everything
+            spriteRenderer.sortingOrder = 200;
+        }
+    }
+
+    // Call this method when ingredient dragging ends
+    public void OnIngredientDragEnd(GameObject ingredient)
+    {
+        var spriteRenderer = ingredient.GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            // Reset to normal sorting order
+            spriteRenderer.sortingOrder = 0;
+        }
     }
 
     private void HideIngredient(GameObject ingredient)
@@ -188,6 +223,9 @@ public class CookingGameManager : MonoBehaviour
         ClearTextBox();
         DisplayNoCombinationObjects();
         ClearIngredients();
+        
+        // Respawn all ingredients even when combination fails
+        RespawnAllIngredients();
     }
 
     private bool IsCombinationMatch(List<GameObject> requiredIngredients)
@@ -216,6 +254,9 @@ public class CookingGameManager : MonoBehaviour
 
         UnlockPanels(combo);
         ClearIngredients();
+        
+        // Respawn all ingredients after successful combination
+        RespawnAllIngredients();
     }
 
     private void UnlockPanels(Combination combo)
@@ -299,19 +340,85 @@ public class CookingGameManager : MonoBehaviour
 
     private void ToggleNoCombinationObjects()
     {
-        // Show the no combination objects.
-        foreach (var obj in objectsToDisplayOnNoCombination)
+        // Randomly select one trash object if available
+        if (trashObjects.Count > 0)
         {
-            obj.SetActive(true);
-            var spriteRenderer = obj.GetComponent<SpriteRenderer>();
+            int randomIndex = Random.Range(0, trashObjects.Count);
+            GameObject selectedTrashObject = trashObjects[randomIndex];
+            
+            // Show the randomly selected trash object
+            selectedTrashObject.SetActive(true);
+            var spriteRenderer = selectedTrashObject.GetComponent<SpriteRenderer>();
             if (spriteRenderer != null)
             {
                 spriteRenderer.enabled = true;
+                // Set the sorting order to ensure it appears on top
+                spriteRenderer.sortingOrder = 100;
             }
+
+            // Trigger animation if the object has an Animator
+            var animator = selectedTrashObject.GetComponent<Animator>();
+            if (animator != null)
+            {
+                animator.enabled = true;
+                animator.SetTrigger("Play");
+                // Alternative: Reset and play the default animation
+                animator.Play(0, 0, 0f);
+            }
+
+            // Hide the trash object after the deactivationDelay time
+            StartCoroutine(HideTrashObjectAfterDelay(selectedTrashObject));
+        }
+        else
+        {
+            // Fallback to original behavior if no trash objects are assigned
+            foreach (var obj in objectsToDisplayOnNoCombination)
+            {
+                obj.SetActive(true);
+                var spriteRenderer = obj.GetComponent<SpriteRenderer>();
+                if (spriteRenderer != null)
+                {
+                    spriteRenderer.enabled = true;
+                    // Set the sorting order to ensure it appears on top
+                    spriteRenderer.sortingOrder = 100;
+                }
+
+                // Trigger animation if the object has an Animator
+                var animator = obj.GetComponent<Animator>();
+                if (animator != null)
+                {
+                    animator.enabled = true;
+                    animator.SetTrigger("Play");
+                    // Alternative: Reset and play the default animation
+                    animator.Play(0, 0, 0f);
+                }
+            }
+
+            // Hide the objects after the deactivationDelay time.
+            StartCoroutine(HideNoCombinationObjectsAfterDelay());
+        }
+    }
+
+    private IEnumerator HideTrashObjectAfterDelay(GameObject trashObject)
+    {
+        yield return new WaitForSeconds(deactivationDelay);
+
+        // Stop animation if the object has an Animator
+        var animator = trashObject.GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.enabled = false;
         }
 
-        // Hide the objects after the deactivationDelay time.
-        StartCoroutine(HideNoCombinationObjectsAfterDelay());
+        // Hide the trash object
+        trashObject.SetActive(false);
+        var spriteRenderer = trashObject.GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.enabled = false;
+            // Reset the sorting order when hiding
+            spriteRenderer.sortingOrder = 0;
+        }
     }
 
     private IEnumerator HideNoCombinationObjectsAfterDelay()
@@ -321,12 +428,35 @@ public class CookingGameManager : MonoBehaviour
         // Hide the objects.
         foreach (var obj in objectsToDisplayOnNoCombination)
         {
+            // Stop animation if the object has an Animator
+            var animator = obj.GetComponent<Animator>();
+            if (animator != null)
+            {
+                animator.enabled = false;
+            }
+
             obj.SetActive(false);
             var spriteRenderer = obj.GetComponent<SpriteRenderer>();
             if (spriteRenderer != null)
             {
                 spriteRenderer.enabled = false;
+                // Reset the sorting order when hiding
+                spriteRenderer.sortingOrder = 0;
             }
         }
+    }
+
+    private void RespawnAllIngredients()
+    {
+        // Respawn all ingredients using stored references
+        foreach (DragAndSwing ingredient in allIngredientReferences)
+        {
+            if (ingredient != null)
+            {
+                ingredient.RespawnAfterCooking();
+            }
+        }
+        
+        Debug.Log($"Respawned {allIngredientReferences.Count} ingredients after cooking!");
     }
 }

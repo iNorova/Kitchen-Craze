@@ -17,11 +17,20 @@ public class DragAndSwing : MonoBehaviour
     private int defaultSortingOrder; // Default sorting order for the object
     private SpriteRenderer spriteRenderer; // SpriteRenderer to change sorting order
 
+    // Respawn variables
+    private Vector3 originalPosition; // Store the original position
+    private Quaternion originalRotation; // Store the original rotation
+    private bool shouldRespawn = false; // Flag to trigger respawn
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        // Store original position and rotation for respawning
+        originalPosition = transform.position;
+        originalRotation = transform.rotation;
 
         // Disable gravity temporarily when dragging
         rb.gravityScale = 0;
@@ -50,17 +59,31 @@ public class DragAndSwing : MonoBehaviour
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             rb.rotation = angle;
         }
+
+        // Check if object has fallen off screen and should respawn
+        if (shouldRespawn && transform.position.y < -10f) // Adjust -10f based on your screen size
+        {
+            RespawnObject();
+        }
+
+
     }
 
     private void OnMouseDown()
     {
         isDragging = true;
 
-        // Bring the object to the top layer for rendering
-        spriteRenderer.sortingOrder = 100;
+        // Bring the object to the very top layer for rendering (above shelves)
+        spriteRenderer.sortingOrder = 200;
 
         // Disable collisions with other ingredients
         Physics2D.IgnoreLayerCollision(gameObject.layer, gameObject.layer, true);
+
+        // Temporarily disable the collider to pass through shelves
+        if (col != null)
+        {
+            col.enabled = false;
+        }
 
         // Calculate the offset between the object and the mouse position
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -80,11 +103,30 @@ public class DragAndSwing : MonoBehaviour
         // Re-enable collisions with other ingredients
         Physics2D.IgnoreLayerCollision(gameObject.layer, gameObject.layer, false);
 
+        // Re-enable the collider
+        if (col != null)
+        {
+            col.enabled = true;
+        }
+
+        // Ignore collisions with all layers EXCEPT the pot layer
+        // This way it only detects the pot/pan
+        for (int i = 0; i < 32; i++) // Unity has 32 layers
+        {
+            if (i != LayerMask.NameToLayer("Pot")) // Replace "Pot" with your pot's layer name
+            {
+                Physics2D.IgnoreLayerCollision(gameObject.layer, i, true);
+            }
+        }
+
         // Apply a random torque to simulate a "sag" effect (optional for realism)
         rb.AddTorque(Random.Range(-sagTorque, sagTorque));
 
         // Re-enable gravity and let the object fall naturally
         rb.gravityScale = 1;
+
+        // Set flag to respawn when object falls off screen
+        shouldRespawn = true;
 
         // Optionally freeze rotation after dragging
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
@@ -96,7 +138,73 @@ public class DragAndSwing : MonoBehaviour
         {
             // When the ingredient collides with the pot
             Debug.Log("Ingredient added to pot: " + gameObject.name);
-            // Add your logic here for handling the ingredient
+            
+            // Let the cooking system handle the ingredient
+            // Don't hide it immediately - let the cooking system do that
+            shouldRespawn = false;
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!isDragging && other.CompareTag(potTag))
+        {
+            // When the ingredient enters the pot trigger
+            Debug.Log("Ingredient added to pot (trigger): " + gameObject.name);
+            
+            // Let the cooking system handle the ingredient
+            // Don't hide it immediately - let the cooking system do that
+            shouldRespawn = false;
+        }
+    }
+
+    // Public method to be called by the cooking system when a combination is completed
+    public void RespawnAfterCooking()
+    {
+        RespawnObject();
+    }
+
+    private void RespawnObject()
+    {
+        // Reset position and rotation to original
+        transform.position = originalPosition;
+        transform.rotation = originalRotation;
+        
+        // Reset velocity and angular velocity
+        rb.linearVelocity = Vector2.zero;
+        rb.angularVelocity = 0f;
+        
+        // Reset respawn flag
+        shouldRespawn = false;
+        
+        // Reset gravity scale
+        rb.gravityScale = 0;
+        
+        // Reset constraints to allow movement
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        
+        // Re-enable the collider when respawning
+        if (col != null)
+        {
+            col.enabled = true;
+        }
+        
+        // Re-enable collisions with all layers when respawning
+        for (int i = 0; i < 32; i++)
+        {
+            Physics2D.IgnoreLayerCollision(gameObject.layer, i, false);
+        }
+        
+        // Ensure the object is active and visible
+        gameObject.SetActive(true);
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.enabled = true;
+        }
+        
+        // Reset sorting order to default
+        spriteRenderer.sortingOrder = defaultSortingOrder;
+        
+        Debug.Log("Object respawned: " + gameObject.name);
     }
 }
