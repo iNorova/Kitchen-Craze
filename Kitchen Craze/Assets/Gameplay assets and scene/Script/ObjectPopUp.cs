@@ -54,6 +54,20 @@ public class CookingGameManager : MonoBehaviour
         allIngredientReferences.AddRange(allIngredients);
         Debug.Log($"Found {allIngredientReferences.Count} ingredients to manage");
 
+        // Initialize trash objects to be inactive and disable their animators
+        foreach (var trashObject in trashObjects)
+        {
+            if (trashObject != null)
+            {
+                trashObject.SetActive(false);
+                var animator = trashObject.GetComponent<Animator>();
+                if (animator != null)
+                {
+                    animator.enabled = false;
+                }
+            }
+        }
+
         foreach (var combo in combinations)
         {
             if (combo.cookedObject != null)
@@ -199,7 +213,7 @@ public class CookingGameManager : MonoBehaviour
         {
             Debug.Log("No ingredients in the pot!");
             ClearTextBox();
-            DisplayNoCombinationObjects();
+            // Don't show trash objects when no ingredients are added
             return;
         }
 
