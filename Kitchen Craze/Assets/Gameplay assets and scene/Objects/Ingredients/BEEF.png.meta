@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ecc967a61b4e7479695e73013d0327d1
+guid: a1d22efccd6feb04f913e4dec74ae9d9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8562016298089647643
-    second: Takip_0
+      213: 4513443124646530887
+    second: BEEF_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,53 +96,27 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Takip_0
+      name: BEEF_0
       rect:
         serializedVersion: 2
-        x: 842
-        y: 367
-        width: 484
-        height: 357
+        x: 128
+        y: 646
+        width: 1231
+        height: 1015
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5e1f2475a8b9d2980800000000000000
-      internalID: -8562016298089647643
+      spriteID: 74f4c7ecb98f2ae30800000000000000
+      internalID: 4513443124646530887
       vertices: []
       indices: 
       edges: []
@@ -151,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: f918b16bd6181264ca8a9843c4e091a4
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Takip_0: -8562016298089647643
+      BEEF_0: 4513443124646530887
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

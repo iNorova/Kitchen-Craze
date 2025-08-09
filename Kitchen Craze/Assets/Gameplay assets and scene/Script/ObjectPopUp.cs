@@ -14,6 +14,16 @@ public class CookingGameManager : MonoBehaviour
     [Tooltip("Delay in seconds before processing the mix.")]
     public float mixDelay = 4f;
 
+    [Header("Pan Animation")]
+    [Tooltip("The lid object that will close before the pan wiggles.")]
+    public GameObject panLid;
+    
+    [Tooltip("Delay before the lid closes (in seconds).")]
+    public float lidCloseDelay = 0.5f;
+    
+    [Tooltip("Delay after lid closes before pan wiggles (in seconds).")]
+    public float panWiggleDelay = 0.3f;
+
     [Header("No Combination Objects")]
     public List<GameObject> objectsToDisplayOnNoCombination = new List<GameObject>();
 
@@ -217,13 +227,60 @@ public class CookingGameManager : MonoBehaviour
             return;
         }
 
-        StartCoroutine(MixCoroutine());
+        // Start the lid-pan animation sequence
+        StartCoroutine(LidPanAnimationSequence());
+    }
+
+    private IEnumerator LidPanAnimationSequence()
+    {
+        Debug.Log("LidPanAnimationSequence started at time: " + Time.time);
+        
+        // Wait a bit before starting the sequence
+        yield return new WaitForSeconds(lidCloseDelay);
+        
+        // Close the lid if it exists
+        if (panLid != null)
+        {
+            var lidAnimator = panLid.GetComponent<Animator>();
+            if (lidAnimator != null)
+            {
+                Debug.Log("About to trigger lid animation. Current time: " + Time.time);
+                lidAnimator.SetTrigger("Close");
+                Debug.Log("Lid closing animation triggered");
+            }
+            else
+            {
+                Debug.LogError("LidAnimator component not found on PanLid!");
+            }
+        }
+        else
+        {
+            Debug.LogError("PanLid is null! Check if it's assigned in the Inspector.");
+        }
+        
+        // Wait for lid to close before pan wiggles
+        yield return new WaitForSeconds(panWiggleDelay);
+        
+        // Trigger pan wiggle animation
+        if (mixObject != null)
+        {
+            var panAnimator = mixObject.GetComponent<Animator>();
+            if (panAnimator != null)
+            {
+                panAnimator.SetTrigger("OnClick");
+                Debug.Log("Pan wiggle animation triggered");
+            }
+        }
+        
+        // Wait for the mix delay, then process the combination
+        yield return new WaitForSeconds(mixDelay);
+        
+        // Process the combination
+        yield return StartCoroutine(MixCoroutine());
     }
 
     private IEnumerator MixCoroutine()
     {
-        yield return new WaitForSeconds(mixDelay);
-
         foreach (var combo in combinations)
         {
             if (IsCombinationMatch(combo.ingredientObjects))
